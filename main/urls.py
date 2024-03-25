@@ -22,8 +22,8 @@ from application.views import PostsViewSet, UserViewSet
 
 router = DefaultRouter()
 
-router.register('application', PostsViewSet)
-# router.register('users', UserViewSet, basename='user')
+router.register('posts', PostsViewSet)
+router.register('users', UserViewSet)
 
 
 
@@ -31,5 +31,5 @@ router.register('application', PostsViewSet)
 urlpatterns = [
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
-    path('users/create', UserViewSet.as_view({'post': 'create'}), name='user-create')
+    # path('users/create', UserViewSet.as_view({'post': 'create'})),
 ]

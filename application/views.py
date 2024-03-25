@@ -2,7 +2,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.http import JsonResponse
 from django_filters import DateFromToRangeFilter
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.mixins import CreateModelMixin
+from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -33,7 +33,7 @@ class PostsViewSet(ModelViewSet):
     #         raise ValueError('Превышение количества открытых объявлений')
     #     super().perform_update(serializer)
 
-class UserViewSet(CreateModelMixin):
+class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
