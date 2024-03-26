@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from application.models import Posts
+from application.models import Posts, Comments
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -9,48 +9,65 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'password',)
+        fields = ('id', 'first_name', 'last_name', 'email', 'password',)
         read_only_fields = ('id',)
 
-    def create(self, validated_data):
-        password = validated_data.pop("password")
-        user = User(**validated_data)
-        user.set_password(password)
-        user.save()
-        return user
 
 
-
-class AdvertisementSerializer(serializers.ModelSerializer):
+class PostSerializer(serializers.ModelSerializer):
     """Serializer для объявления."""
 
-    creator = UserSerializer(
-        read_only=True,
+    author = serializers.SlugRelatedField(
+        slug_field='username',
+        read_only=True
     )
+    liked = serializers.SerializerMethodField()
+    likes_quantity = serializers.SerializerMethodField()
+    comment_quantity = serializers.SerializerMethodField()
+    comments = serializers.SerializerMethodField()
 
     class Meta:
         model = Posts
-        fields = ('id', 'title', 'description', 'author', 'created_at',)
+        fields = (
+            'id', 'author','title', 'description', 'created_at', 'liked',
+            'likes_quantity', 'comment_quantity', 'comments'
+        )
 
-    def create(self, validated_data):
-        """Метод для создания"""
+    def get_likes_quantity(self, obj):
+        return obj.likes.count()
 
-        # Простановка значения поля создатель по-умолчанию.
-        # Текущий пользователь является создателем объявления
-        # изменить или переопределить его через API нельзя.
-        # обратите внимание на `context` – он выставляется автоматически
-        # через методы ViewSet.
-        # само поле при этом объявляется как `read_only=True`
-        validated_data["creator"] = self.context["request"].user
-        return super().create(validated_data)
+    def get_comment_quantity(self, obj):
+        return obj.comments.count()
 
-    def validate(self, data):
-        """Метод для валидации. Вызывается при создании и обновлении."""
+    def get_comments(self, obj):
+        comments = obj.comments.order_by('-created')[:10]
+        comment_data = CommentsSerializer(comments, many=True).data
+        return comment_data
 
-        # TODO: добавьте требуемую валидацию
-        creator = self.context['request'].user
-        if Posts.objects.filter(status='OPEN', creator_id=creator).count() >= 10:
-            raise ValueError('Превышение количества открытых объявлений')
-        return data
+    def get_liked(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return obj.likes.filter(user=request.user).exists()
+        return False
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        request = self.context.get('request')
+        if request and not request.user.is_authenticated:
+            representation.pop('liked')
+        return representation
+
+
+class CommentsSerializer(serializers.ModelSerializer):
+    author = serializers.SlugRelatedField(
+        slug_field='username',
+        read_only=True
+    )
+
+    class Meta:
+        model = Comments
+        fields = ('id', 'author', 'text', 'post')
+
+
 
 

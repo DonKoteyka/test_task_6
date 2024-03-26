@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('comment', models.TextField(blank=True, null=True)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='user', to=settings.AUTH_USER_MODEL)),
-                ('adv', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='advertisement', to='application.posts')),
+                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='advertisement', to='application.posts')),
             ],
         ),
     ]

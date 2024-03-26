@@ -18,12 +18,12 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 
-from application.views import PostsViewSet, UserViewSet
+from application.views import PostsViewSet, UserCreateViewSet, UserLogInViewSet, AdminCreateViewSet
 
 router = DefaultRouter()
 
-router.register('posts', PostsViewSet)
-router.register('users', UserViewSet)
+router.register('news', PostsViewSet)
+# router.register('users', UserViewSet)
 
 
 
@@ -31,5 +31,8 @@ router.register('users', UserViewSet)
 urlpatterns = [
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
-    # path('users/create', UserViewSet.as_view({'post': 'create'})),
+    path('user/signup/', UserCreateViewSet.as_view()),
+    path('super/signup/', AdminCreateViewSet.as_view()),
+    path('api/auth/', UserLogInViewSet.as_view()),
+
 ]
