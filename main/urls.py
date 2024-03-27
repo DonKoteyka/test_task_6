@@ -18,21 +18,19 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 
-from application.views import PostsViewSet, UserCreateViewSet, UserLogInViewSet, AdminCreateViewSet
+from application.views import PostsViewSet, UserCreateViewSet, UserLogInViewSet, AdminCreateViewSet, CommentsViewSet
 
 router = DefaultRouter()
 
-router.register('news', PostsViewSet)
-# router.register('users', UserViewSet)
-
-
+router.register('news', PostsViewSet,  basename='news')
+router.register(r'news/(?P<news_id>\d+)/comments', CommentsViewSet, basename='comment')
 
 
 urlpatterns = [
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
-    path('user/signup/', UserCreateViewSet.as_view()),
-    path('super/signup/', AdminCreateViewSet.as_view()),
+    path('api/auth/user/', UserCreateViewSet.as_view()),
+    path('api/auth/super/', AdminCreateViewSet.as_view()),
     path('api/auth/', UserLogInViewSet.as_view()),
 
 ]

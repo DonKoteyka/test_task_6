@@ -7,7 +7,7 @@ class CommentInline(admin.TabularInline):
 
 @admin.register(Posts)
 class Posts(admin.ModelAdmin):
-    list_display = ('pk', 'title', 'description', 'author', 'created_at')
+    list_display = ('pk', 'title', 'description', 'user', 'created_at')
     inlines = (CommentInline,)
     # search_fields = ('text',)
     # list_filter = ('pub_date',)
