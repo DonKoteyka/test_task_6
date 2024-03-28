@@ -18,7 +18,7 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 
-from application.views import PostsViewSet, UserCreateViewSet, UserLogInViewSet, AdminCreateViewSet, CommentsViewSet
+from application.views import PostsViewSet, UserCreateViewSet, UserLogInViewSet, CommentsViewSet
 
 router = DefaultRouter()
 
@@ -30,7 +30,6 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
     path('api/auth/user/', UserCreateViewSet.as_view()),
-    path('api/auth/super/', AdminCreateViewSet.as_view()),
     path('api/auth/', UserLogInViewSet.as_view()),
 
 ]
