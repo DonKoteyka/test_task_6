@@ -18,7 +18,7 @@ services:
       - media_value:/app/media/
     env_file:
       - ./.env
-    command: gunicorn main.wsgi:application --bind 0:8000
+    command: gunicorn main.wsgi:application --bind 0:8000 && python manage.py migrate && python manage.py collectstatic
     depends_on:
       - db
 
