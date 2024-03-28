@@ -8,45 +8,84 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('application', '0001_initial'),
+        ("application", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='comments',
-            options={'verbose_name': 'Комментарии', 'verbose_name_plural': 'Комментарий'},
+            name="comments",
+            options={
+                "verbose_name": "Комментарии",
+                "verbose_name_plural": "Комментарий",
+            },
         ),
         migrations.AlterModelOptions(
-            name='posts',
-            options={'verbose_name': 'Пост', 'verbose_name_plural': 'Посты'},
+            name="posts",
+            options={"verbose_name": "Пост", "verbose_name_plural": "Посты"},
         ),
         migrations.AlterField(
-            model_name='comments',
-            name='post',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comment', to='application.posts'),
+            model_name="comments",
+            name="post",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="comment",
+                to="application.posts",
+            ),
         ),
         migrations.AlterField(
-            model_name='comments',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comment', to=settings.AUTH_USER_MODEL),
+            model_name="comments",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="comment",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
-            model_name='posts',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='post', to=settings.AUTH_USER_MODEL),
+            model_name="posts",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="post",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.CreateModel(
-            name='Likes',
+            name="Likes",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', models.DateTimeField(auto_now_add=True, null=True)),
-                ('posts', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='like', to='application.posts')),
-                ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='like', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created", models.DateTimeField(auto_now_add=True, null=True)),
+                (
+                    "posts",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="like",
+                        to="application.posts",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="like",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Лайк',
-                'verbose_name_plural': 'Лайки',
+                "verbose_name": "Лайк",
+                "verbose_name_plural": "Лайки",
             },
         ),
     ]
