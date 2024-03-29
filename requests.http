@@ -1,0 +1,108 @@
+# примеры API-запросов
+
+@baseUrl = http://89.111.174.10/
+
+# регистрация пользователя 3
+POST {{baseUrl}}api/auth/user/
+Content-Type: application/json
+
+{
+  "first_name": "user3_",
+  "last_name": "user3",
+  "email": "user3@user.ru",
+  "password": "user123456"
+}
+
+###
+
+# авторизация пользователя 3
+POST {{baseUrl}}api/auth/
+Content-Type: application/json
+
+{
+  "email": "user3@user.ru",
+  "password": "user123456"
+}
+
+###
+
+# авторизация пользователя 2
+POST {{baseUrl}}api/auth/
+Content-Type: application/json
+
+{
+  "email": "user2@user.ru",
+  "password": "user123456"
+}
+
+###
+
+# авторизация пользователя 1
+POST {{baseUrl}}api/auth/
+Content-Type: application/json
+
+{
+  "email": "user1@user.ru",
+  "password": "user123456"
+}
+
+###
+
+# получение новостей
+GET {{baseUrl}}api/news/
+Content-Type: application/json
+
+###
+
+# добавление новостей
+POST {{baseUrl}}api/news/
+Content-Type: application/json
+Authorization: Token 69896f99623206f29eb1c634f71f56c816fd8568
+
+{
+  "title": "Xiaomi официально раскрыла цены автомобилей Xiaomi SU7"
+}
+###
+
+# редактирование новостей
+PATCH   {{baseUrl}}api/news/3/
+Content-Type: application/json
+Authorization: Token 69896f99623206f29eb1c634f71f56c816fd8568
+
+{
+  "description": "В Китае прошла еще одна презентация линейки электромобилей Xiaomi SU7. Впервые седан представили в декабре 2023 года. Сегодня, 28 марта, стартовали продажи автомобилей, а Xiaomi озвучила стоимость всех комплектаций."
+}
+
+###
+
+# Лайк
+POST {{baseUrl}}api/news/3/like/
+Content-Type: application/json
+Authorization: Token fbc4d95bf89d27b86914952f38e5f4899fb92060
+
+###
+
+#  Оставление комментариев
+POST   {{baseUrl}}api/news/3/comments/
+Content-Type: application/json
+Authorization: Token 3531951db51b0bf5b5a511b8247f14d977c9ec34
+
+{
+  "post": "3",
+  "comment": "Ну это просто [капец]!"
+}
+
+###
+# для тестовых целей добавлена возможность добавления администратора через api
+POST {{baseUrl}}api/auth/user/
+Content-Type: application/json
+
+{
+  "first_name": "admin",
+  "last_name": "admin_koteyka",
+  "email": "admin@admin.ru",
+  "password": "admin123456",
+  "admin": "True"
+}
+
+###
